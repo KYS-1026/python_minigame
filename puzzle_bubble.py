@@ -1,30 +1,46 @@
-import pygame # ¶óÀÌºê·¯¸® ÀÓÆ÷Æ®
+import os
+import pygame # ë¼ì´ë¸ŒëŸ¬ë¦¬ ìž„í¬íŠ¸
 
-pygame.init() # ÆÄÀÌ°ÔÀÓ ÃÊ±âÈ­
+pygame.init() # íŒŒì´ê²Œìž„ ì´ˆê¸°í™”
 
-# 3. ÆÄÀÌ°ÔÀÓ¿¡ »ç¿ëµÇ´Â Àü¿ª º¯¼ö ¼±¾ð
-WHITE = (255,255,255) # »ö rgb ÄÚµå  ¹è°æ 
-size = [448,720] # ¸®½ºÆ® Çü½ÄÀ¸·Î x,y ÁÂÇ¥¸¦ ÀÔ·Â?? Å©±â 
-screen = pygame.display.set_mode(size) # size º¯¼ö¸¸Å­ µð½ºÇÃ·¹ÀÌ ½ºÅ©¸° Å©±â °´Ã¼ 
+# ì „ì—­ ë³€ìˆ˜ ì„ ì–¸
+WHITE = (255,255,255) # ìƒ‰ rgb ì½”ë“œ  ë°°ê²½ 
+size = [448,720] # ë¦¬ìŠ¤íŠ¸ í˜•ì‹ìœ¼ë¡œ x,y ì¢Œí‘œë¥¼ ìž…ë ¥?? í¬ê¸° 
+screen = pygame.display.set_mode(size) # size ë³€ìˆ˜ë§Œí¼ ë””ìŠ¤í”Œë ˆì´ ìŠ¤í¬ë¦° í¬ê¸° ê°ì²´ 
 pygame.display.set_caption("Puzzle Bubble")
 
-done = False # °ÔÀÓ Á¾·á¸¦ È®ÀÎÇÒ º¯¼ö 
-clock = pygame.time.Clock() # FPSÀ» ¼³Á¤ÇÏ´Â º¯¼ö : È­¸éÀ» ¾ó¸¶³ª ÀÚÁÖ±×·ÁÁÙ °ÍÀÌ³Ä ! 
+done = False # ê²Œìž„ ì¢…ë£Œë¥¼ í™•ì¸í•  ë³€ìˆ˜ 
+clock = pygame.time.Clock() # FPSì„ ì„¤ì •í•˜ëŠ” ë³€ìˆ˜ : í™”ë©´ì„ ì–¼ë§ˆë‚˜ ìžì£¼ê·¸ë ¤ì¤„ ê²ƒì´ëƒ ! 
 
-# 4. pygame ¹«ÇÑ ·çÇÁ 
+# ë°°ê²½ì´ë¯¸ì§€ ë¶ˆëŸ¬ì˜¤ê¸°
+path = os.path.dirname(__file__)
+background = pygame.image.load(os.path.join(path, "pngtree_bg_img.jpg"))
+
+# ë²„ë¸” ì´ë¯¸ì§€ ë¶ˆëŸ¬ì˜¤ê¸° 
+bubble_imgs = [
+    pygame.image.load(os.path.join(path, "red.png")).convert_alpha(),
+    pygame.image.load(os.path.join(path, "yellow.png")).convert_alpha(),
+    pygame.image.load(os.path.join(path, "blue.png")).convert_alpha(),
+    pygame.image.load(os.path.join(path, "green.png")).convert_alpha(),
+    pygame.image.load(os.path.join(path, "purple.png")).convert_alpha(),
+    pygame.image.load(os.path.join(path, "black.png")).convert_alpha()
+]
+
+# pygame ë¬´í•œ ë£¨í”„ 
 def runGame():
-    global done # Àü¿ª º¯¼ö ¼±¾ð 
+    global done # ì „ì—­ ë³€ìˆ˜ ì„ ì–¸ 
     while not done:
-        clock.tick(60) # Clock Å¬·¡½º¿¡ ÀÖ´Â ¸Þ¼­µå »ç¿ë...-> 1ÃÊ¿¡ 60¹ø È­¸é Ãâ·Â 
-        screen.fill(WHITE) # fill ¸Þ¼­µå·Î »öÀ» ÇÏ¾á»öÀ¸·Î Ã¤¿ò 
+        clock.tick(60) # Clock í´ëž˜ìŠ¤ì— ìžˆëŠ” ë©”ì„œë“œ ì‚¬ìš©...-> 1ì´ˆì— 60ë²ˆ í™”ë©´ ì¶œë ¥ 
+        screen.fill(WHITE) # fill ë©”ì„œë“œë¡œ ìƒ‰ì„ í•˜ì–€ìƒ‰ìœ¼ë¡œ ì±„ì›€ 
         
         for event in pygame.event.get(): 
-        # pygame.event.get() : °ÔÀÓ ¾È¿¡¼­ ¹ß»ýÇÏ´Â ÀÌº¥Æ®¸¦ °¡Á®¿È, ¸®½ºÆ® ÇüÅÂ·Î ¸®ÅÏ 
-            if event.type == pygame.QUIT: # ÀÌº¥Æ®ÀÇ 
+        # pygame.event.get() : ê²Œìž„ ì•ˆì—ì„œ ë°œìƒí•˜ëŠ” ì´ë²¤íŠ¸ë¥¼ ê°€ì ¸ì˜´, ë¦¬ìŠ¤íŠ¸ í˜•íƒœë¡œ ë¦¬í„´ 
+            if event.type == pygame.QUIT: # ì´ë²¤íŠ¸ì˜ 
                 done = True
             
-            # ¹æÇâÅ° ÀÔ·Â¿¡ ´ëÇÑ ÀÌº¥Æ® Ã³¸®
-            if event.type == pygame.KEYDOWN: # Å°º¸µå ¹öÆ°À» ´­·¶À»¶§ ¹ß»ý ! 
+            # ë°©í–¥í‚¤ ìž…ë ¥ì— ëŒ€í•œ ì´ë²¤íŠ¸ ì²˜ë¦¬
+            '''
+            if event.type == pygame.KEYDOWN: # í‚¤ë³´ë“œ ë²„íŠ¼ì„ ëˆŒë €ì„ë•Œ ë°œìƒ ! 
                 if event.key == pygame.K_UP:
                     if y > 0:
                         y -= 10
@@ -37,9 +53,11 @@ def runGame():
                 elif event.key == pygame.K_RIGHT:
                     if x < size[0]-a_width:
                         x += 10 
+            '''
+            
                     
-        screen.blit(airplane, (x,y)) # airplaneÀ» x,y ÁÂÇ¥¿¡ ¹èÄ¡! 
-        pygame.display.update() # ¹èÄ¡ÇÑ ºñÇà±â°¡ º¸ÀÌµµ·Ï ½ºÅ©¸° ¾÷µ¥ÀÌÆ® 
+        screen.blit(background, (0,0)) # ë°°ê²½ ë°°ì¹˜! 
+        pygame.display.update() # ë°°ì¹˜í•œ ë¹„í–‰ê¸°ê°€ ë³´ì´ë„ë¡ ìŠ¤í¬ë¦° ì—…ë°ì´íŠ¸ 
         
 runGame()
 pygame.quit()
